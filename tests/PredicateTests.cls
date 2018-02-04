@@ -10,7 +10,6 @@ public class PredicateTests {
     Test.startTest();
     Account[] acts = (Account[])
       SimpleSOQLQuery.newInstance(Account.SObjectType)
-      .SetLimit(1)
       .Predicate(EqualsPredicate.newInstance('Name', 'Bill Gates'))
       .Execute();
 
@@ -30,7 +29,6 @@ public class PredicateTests {
     Test.startTest();
     Account[] acts = (Account[])
       SimpleSOQLQuery.newInstance(Account.SObjectType)
-      .SetLimit(1)
       .Predicate(NotEqualsPredicate.newInstance('Name', 'Bill Gates'))
       .Execute();
 
@@ -50,7 +48,6 @@ public class PredicateTests {
     Test.startTest();
     Account[] acts = (Account[])
       SimpleSOQLQuery.newInstance(Account.SObjectType)
-      .SetLimit(1)
       .Predicate(LikePredicate.newInstance('Name', 'Bill%'))
       .Execute();
 
@@ -69,7 +66,6 @@ public class PredicateTests {
     Test.startTest();
     Account[] acts = (Account[])
       SimpleSOQLQuery.newInstance(Account.SObjectType)
-      .SetLimit(1)
       .Predicate(NotPredicate.newInstance(LikePredicate.newInstance('Name', 'Bill%')))
       .Execute();
 
