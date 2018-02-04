@@ -1,28 +1,37 @@
-global with sharing class AndPredicate implements IPredicate, IComplexPredicate {
+global with sharing class AndPredicate implements IPredicate {
   private List<IPredicate> predicates = new List<IPredicate>();
 
-  global AndPredicate() {
-
+  global static AndPredicate NewInstance() {
+    return new AndPredicate();
   }
 
-  global AndPredicate(IPredicate p1, IPredicate p2) {
-      predicates.add(p1);
-      predicates.add(p2);
+  global static AndPredicate NewInstance(IPredicate p1, IPredicate p2) {
+    AndPredicate p = AndPredicate.NewInstance();
+    p.Append(p1);
+    p.Append(p2);
+    return p;
   }
-  global AndPredicate(IPredicate p1, IPredicate p2, IPredicate p3) {
-    this(p1, p2);
-    predicates.add(p3);
+  global static AndPredicate NewInstance(IPredicate p1, IPredicate p2, IPredicate p3) {
+    AndPredicate p = AndPredicate.NewInstance(p1, p2);
+    p.Append(p3);
+    return p;
   }
-  global AndPredicate(IPredicate p1, IPredicate p2, IPredicate p3, IPredicate p4) {
-    this(p1, p2, p3);
-    predicates.add(p4);
+  global static AndPredicate NewInstance(IPredicate p1, IPredicate p2, IPredicate p3, IPredicate p4) {
+    AndPredicate p = AndPredicate.NewInstance(p1, p2, p3);
+    p.Append(p4);
+    return p;
   }
-  global AndPredicate(IPredicate p1, IPredicate p2, IPredicate p3, IPredicate p4, IPredicate p5) {
-    this(p1, p2, p3, p4);
-    predicates.add(p5);
+  global static AndPredicate NewInstance(IPredicate p1, IPredicate p2, IPredicate p3, IPredicate p4, IPredicate p5) {
+    AndPredicate p = AndPredicate.NewInstance(p1, p2, p3, p4);
+    p.Append(p5);
+    return p;
   }
-  global AndPredicate(IPredicate[] ps) {
-    predicates.addAll(ps);
+  global static AndPredicate NewInstance(IPredicate[] ps) {
+    AndPredicate pred = AndPredicate.NewInstance();
+    for (IPredicate p : ps) {
+      pred.Append(p);
+    }
+    return pred;
   }
 
   global AndPredicate Append(IPredicate p) {
