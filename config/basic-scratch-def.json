@@ -1,0 +1,7 @@
+{
+    "orgName": "ORM For Salesforce",
+    "edition": "Developer",
+    "orgPreferences" : {
+        "enabled": ["S1DesktopEnabled"]
+    }
+}

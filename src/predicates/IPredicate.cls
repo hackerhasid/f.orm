@@ -1,0 +1,2 @@
+global interface IPredicate {
+}
