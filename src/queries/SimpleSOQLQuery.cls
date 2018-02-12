@@ -21,50 +21,85 @@ global with sharing class SimpleSOQLQuery implements IQuery {
     return this;
   }
 
-  // global SimpleSOQLQuery Include(String assoc) {
-  //   String relationshipName = '';
-  //   List<String> fieldsToTraverse = assoc.split('\\.');
-  //   Map<String, Schema.SObjectField> objectFields = queryObjectFields();
+  /**
+   * Example usage:
+   * Include('Case__c')
+   * Include('Case__r')
+   * Include('Case__c.Id')
+   * Include('Case__r.Id')
+   * Include('Case__r.Account')
+   * Include('Case__r.Account.Name')
+   **/
+  global SimpleSOQLQuery Include(String assoc) {
+    List<String> fieldsToTraverse = assoc.split('\\.');
+    Map<String, Schema.SObjectField> objectFields = queryObjectFields();
+    IncludeRecursive(fieldsToTraverse.remove(0), fieldsToTraverse, objectFields, '');
+    return this;
+  }
 
-  //   while(fieldsToTraverse.size() > 0) {
-  //     Boolean isChildmostField = false;
-  //     String currentFieldName = fieldsToTraverse.remove(0);
-  //     if (fieldsToTraverse.size() == 0) {
-  //       isChildmostField = true;
-  //     }
-  //     // end users may use __r for their custom relationship not realizing
-  //     // we expect __c since that's the actual field on the DescribeFieldResult
-  //     // let's fix that for them
-  //     if (currentFieldName.endsWith('__r')) {
-  //       currentFieldName = currentFieldName.left(currentFieldName.length() - 1) + 'c';
-  //     }
+  private void IncludeRecursive(String head, List<String> tail, Map<String, Schema.SObjectField> objectFields, String relationshipName) {
+    // SF has a few different ways of naming relationships
+    // we'll loop through and try to find
 
-  //     Schema.DescribeFieldResult describeField = objectFields.get(currentFieldName).getDescribe();
+    Schema.SObjectField relationshipField = objectFields.get(head);
 
-  //     relationshipName += describeField.getRelationshipName() + '.';
-  //     List<Schema.sObjectType> referencedObjects = describeField.getReferenceTo();
+    if (relationshipField == null) {
+      // some fields end in id (e.g. accountid on opportunity)
+      if (!head.endsWith('id')) {
+        String relName = head + 'id';
+        relationshipField = objectFields.get(relName);
+      }
+    }
 
-  //     // if we're on the last field then we need to grab all it's fields
-  //     if (isChildmostField) {
-  //       Set<String> fieldNames = new Set<String>();
-  //       for (Schema.sObjectType objType : referencedObjects) {
-  //         for(String fn : getAllFieldNames(objType)) {
-  //           fieldNames.add(relationshipName + fn);
-  //         }
-  //       }
-  //       // now append all these field names to the query
-  //       queryFields.addAll(fieldNames);
-  //     } else {
-  //       // reset objectFields and put all elements from all possible related types
-  //       objectFields = new Map<String, Schema.SObjectField>();
-  //       for(Schema.sObjectType st : referencedObjects) {
-  //         objectFields.putAll(st.getDescribe().fields.getMap());
-  //       }
-  //     }
-  //   }
+    if (relationshipField == null) {
+      // end users may use __r for their custom relationship not realizing
+      // we expect __c since that's the actual field on the DescribeFieldResult
+      // let's fix that for them
+      if (head.endsWith('__r')) {
+        String relName = head.left(head.length() - 1) + 'c';
+        relationshipField = objectFields.get(relName);
+      }
+    }
 
-  //   return this;
-  // }
+    if (relationshipField == null) {
+      InvalidParameterValueException ex = new InvalidParameterValueException('Include', String.valueOf(head));
+      ex.setMessage(head + ' is not a valid reference');
+      throw ex; 
+    }
+
+    System.debug('head: ' + head);
+    for (string f : objectFields.keySet()){
+      System.debug(f);
+    }
+    
+    Schema.DescribeFieldResult describeField = relationshipField.getDescribe();
+
+    if (describeField.getType() == Schema.DisplayType.REFERENCE) {
+      if (!String.IsBlank(relationshipName)) {
+        relationshipName += '.';
+      }
+      relationshipName += describeField.getRelationshipName();
+      List<Schema.sObjectType> referenceObjectTypes = describeField.getReferenceTo();
+      // TODO how do we handle multiple reference types?!
+      Schema.sObjectType firstObjectType = referenceObjectTypes.get(0);
+      objectFields = firstObjectType.getDescribe().fields.getMap();
+
+      if (tail == null || tail.size() == 0) {
+        // include all children from this reference
+        for (String fieldName : objectFields.keySet()) {
+          SelectField(relationshipName + '.' + fieldName);
+        }
+        return;
+      }
+      
+      IncludeRecursive(tail.remove(0), tail, objectFields, relationshipName);
+      return;
+    } else {
+      // include this relationship with this field
+      SelectField(relationshipName + '.' + describeField.getLocalName());
+      return;
+    }
+  }
 
   global SimpleSOQLQuery Predicate(IPredicate p) {
     predicate = p;
@@ -143,6 +178,8 @@ global with sharing class SimpleSOQLQuery implements IQuery {
     if (this.queryFor != null) {
       query += ' FOR ' + this.queryFor;
     }
+
+    System.debug('Query: ' + query);
 
     return query;
   }
