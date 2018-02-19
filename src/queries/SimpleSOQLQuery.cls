@@ -1,7 +1,7 @@
 global with sharing class SimpleSOQLQuery implements IQuery {
   private Set<String> queryFields = new Set<String>();
   private IPredicate predicate = null;
-  private Integer queryLimit = null;
+  protected Integer queryLimit = null;
   private Integer queryOffset = null;
   private OrderBy queryOrdering = null;
   private SObjectType queryObject = null;
@@ -32,7 +32,7 @@ global with sharing class SimpleSOQLQuery implements IQuery {
    **/
   global SimpleSOQLQuery Include(String assoc) {
     List<String> fieldsToTraverse = assoc.split('\\.');
-    Map<String, Schema.SObjectField> objectFields = queryObjectFields();
+    Map<String, Schema.SObjectField> objectFields = SchemaHelper.getAllFieldsForObject(queryObject);
     IncludeRecursive(fieldsToTraverse.remove(0), fieldsToTraverse, objectFields, '');
     return this;
   }
@@ -116,11 +116,6 @@ global with sharing class SimpleSOQLQuery implements IQuery {
     return this;
   }
 
-  global SimpleSOQLQuery SetLimit(Integer l) {
-    this.queryLimit = l;
-    return this;
-  }
-
   global SimpleSOQLQuery ForView() {
     this.queryFor = 'VIEW';
     return this;
@@ -133,6 +128,11 @@ global with sharing class SimpleSOQLQuery implements IQuery {
 
   global SimpleSOQLQuery ForUpdate() {
     this.queryFor = 'UPDATE';
+    return this;
+  }
+
+  global SimpleSOQLQuery SetLimit(Integer l) {
+    this.queryLimit = l;
     return this;
   }
 
@@ -149,11 +149,11 @@ global with sharing class SimpleSOQLQuery implements IQuery {
     String query = buildQuery();
     return Database.Query(query);
   }
-
+  
   public String BuildQuery() {
     List<String> fields = new List<String>(this.queryFields);
     if (queryFields.size() == 0) {
-      fields = new List<String>(getAllFieldNames(queryObject));
+      fields = new List<String>(SchemaHelper.getAllFieldNamesForObject(queryObject));
     }
 
     String query = 'SELECT ' + String.join(new List<String>(fields), ',');
@@ -183,24 +183,4 @@ global with sharing class SimpleSOQLQuery implements IQuery {
 
     return query;
   }
-
-  Map<String, Schema.SObjectField> queryObjectFields = null;
-  private Map<String, Schema.SObjectField> queryObjectFields() {
-    if (this.queryObjectFields == null) {
-      Schema.DescribeSObjectResult describe = queryObject.getDescribe();
-      this.queryObjectFields = describe.fields.getMap();
-    }
-    return this.queryObjectFields;
-  }
-
-  private Set<String> getAllFieldNames(SObjectType t) {
-    Map<String, Schema.SObjectField> fieldMap = queryObjectFields();
-    Set<String> setWithFields = new Set<String>();
-
-    for (Schema.SObjectField field : fieldMap.values()) {
-      setWithFields.add(field.getDescribe().getLocalName());
-    }
-
-		return setWithFields;
-	}
 }
