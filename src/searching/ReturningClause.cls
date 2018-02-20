@@ -23,6 +23,11 @@ global with sharing class ReturningClause {
     return this;
   }
 
+  global ReturningClause SelectFields(String[] f) {
+    this.clauseFields.addAll(f);
+    return this;
+  }
+
   global ReturningClause Predicate(IPredicate p) {
     this.clausePredicate = p;
     return this;
