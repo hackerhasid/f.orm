@@ -8,10 +8,10 @@ global with sharing class ReturningClause {
   private Integer clauseLimit = null;
   private Integer clauseOffset = null;
 
-  global ReturningClause NewInstance(SObjectType returningType) {
+  global static ReturningClause NewInstance(SObjectType returningType) {
     return NewInstance(returningType.getDescribe().getName());
   }
-  global ReturningClause NewInstance(String returningType) {
+  global static ReturningClause NewInstance(String returningType) {
     return new ReturningClause(returningType);
   }
   private ReturningClause(String returningType) {

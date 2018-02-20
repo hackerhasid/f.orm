@@ -65,7 +65,7 @@ global with sharing class SimpleSOSLQuery implements IQuery {
     }
 
     if (queryReturningClause.size() > 0) {
-      query += ' RETURNING';
+      query += ' RETURNING ';
       Boolean isFirstClause = true;
       for (ReturningClause c : queryReturningClause) {
         if (!isFirstClause) {
