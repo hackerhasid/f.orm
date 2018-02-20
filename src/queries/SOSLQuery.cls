@@ -1,32 +1,32 @@
-global with sharing class SimpleSOSLQuery implements IQuery {
+global with sharing class SOSLQuery implements IQuery {
   // https://developer.salesforce.com/docs/atlas.en-us.soql_sosl.meta/soql_sosl/sforce_api_calls_sosl_syntax.htm
 
   global Enum SearchGroup { ALL_FIELDS, NAME_FIELDS, EMAIL_FIELDS, PHONE_FIELDS, SIDEBAR_FIELDS }
 
   private String queryString = null;
-  private SimpleSOSLQuery.SearchGroup querySearchGroup = null;
+  private SOSLQuery.SearchGroup querySearchGroup = null;
   private List<ReturningClause> queryReturningClause = new List<ReturningClause>();
   private Integer queryLimit = null;
 
-  global static SimpleSOSLQuery NewInstance(String query) {
-    return new SimpleSOSLQuery(query);
+  global static SOSLQuery NewInstance(String query) {
+    return new SOSLQuery(query);
   }
 
-  private SimpleSOSLQuery(String query) {
+  private SOSLQuery(String query) {
     this.queryString = query;
   }
 
-  global SimpleSOSLQuery SetLimit(Integer l) {
+  global SOSLQuery SetLimit(Integer l) {
     this.queryLimit = l;
     return this;
   }
 
-  global SimpleSOSLQuery AndReturning(ReturningClause c) {
+  global SOSLQuery AndReturning(ReturningClause c) {
     queryReturningClause.add(c);
     return this;
   }
 
-  global SimpleSOSLQuery OnlyReturning(ReturningClause c) {
+  global SOSLQuery OnlyReturning(ReturningClause c) {
     queryReturningClause.clear();
     queryReturningClause.add(c);
     return this;
@@ -51,15 +51,15 @@ global with sharing class SimpleSOSLQuery implements IQuery {
 
     if (querySearchGroup != null) {
       query += ' IN ';
-      if (querySearchGroup == SimpleSOSLQuery.SearchGroup.ALL_FIELDS) {
+      if (querySearchGroup == SOSLQuery.SearchGroup.ALL_FIELDS) {
         query += 'ALL FIELDS';
-      } else if (querySearchGroup == SimpleSOSLQuery.SearchGroup.NAME_FIELDS) {
+      } else if (querySearchGroup == SOSLQuery.SearchGroup.NAME_FIELDS) {
         query += 'NAME FIELDS';
-      } else if (querySearchGroup == SimpleSOSLQuery.SearchGroup.EMAIL_FIELDS) {
+      } else if (querySearchGroup == SOSLQuery.SearchGroup.EMAIL_FIELDS) {
         query += 'EMAIL FIELDS';
-      } else if (querySearchGroup == SimpleSOSLQuery.SearchGroup.PHONE_FIELDS) {
+      } else if (querySearchGroup == SOSLQuery.SearchGroup.PHONE_FIELDS) {
         query += 'PHONE FIELDS';
-      } else if (querySearchGroup == SimpleSOSLQuery.SearchGroup.SIDEBAR_FIELDS) {
+      } else if (querySearchGroup == SOSLQuery.SearchGroup.SIDEBAR_FIELDS) {
         query += 'SIDEBAR FIELDS';
       }
     }

@@ -1,7 +1,7 @@
 @isTest
-public class SimpleSOSLQueryTests {
+public class SOSLQueryTests {
   @isTest static void SimpleReturningTest() {
-    SimpleSOSLQuery query = SimpleSOSLQuery.newInstance('Microsoft')
+    SOSLQuery query = SOSLQuery.newInstance('Microsoft')
       .AndReturning(ReturningClause.newInstance(Account.getSObjectType()));
 
     String strQuery = query.BuildQuery();
@@ -9,7 +9,7 @@ public class SimpleSOSLQueryTests {
   }
 
   @isTest static void ReturningWithStringFieldTest() {
-    SimpleSOSLQuery query = SimpleSOSLQuery.newInstance('Microsoft')
+    SOSLQuery query = SOSLQuery.newInstance('Microsoft')
       .AndReturning(
         ReturningClause.newInstance(Account.getSObjectType())
           .SelectField('Name')
@@ -20,7 +20,7 @@ public class SimpleSOSLQueryTests {
   }
 
   @isTest static void ReturningWithFieldAndPredicateTest() {
-    SimpleSOSLQuery query = SimpleSOSLQuery.newInstance('Microsoft')
+    SOSLQuery query = SOSLQuery.newInstance('Microsoft')
       .AndReturning(
         ReturningClause.newInstance(Account.getSObjectType())
           .SelectField('Id')
