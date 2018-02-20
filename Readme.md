@@ -14,13 +14,13 @@ You should really look at the tests since those will be kept up to date more tha
 
 ## SOQL Query
 
-```
+```apex
 Account act = SimpleSOQLQuery.newInstance(Opportunity.SObjectType)
   .Include('Account')
   .First();
 ```
 
-```
+```apex
 Account[] acts = SimpleSOQLQuery.newInstance(Opportunity.SObjectType)
   .Include('Account')
   .Limit(100)
@@ -31,7 +31,7 @@ Account[] acts = SimpleSOQLQuery.newInstance(Opportunity.SObjectType)
 
 ## SOSL Query
 
-```
+```apex
 Account[] acts = SOSLQuery.newInstance('Microsoft')
   .AndReturning(
     ReturningClause.newInstance(Account.getSObjectType())
