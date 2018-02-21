@@ -45,7 +45,7 @@ Account[] acts = SOSLQuery.newInstance('Microsoft')
 
 F.ORM is meant as a natural Apex API to output SOQL and SOSL. All consumer-intended classes are instantiated via a _static_ `newInstance` method. All consumer-intended methods return the same type to allow chaining.
 
-## Quries
+## Queries
 
 There are 2 qury types:
 
@@ -85,6 +85,22 @@ The `OrderBy` class is used for building ordering clauses.
 ## Searching
 
 The  `ReturnClause` class is used to represent the `RETURNING...` phrase in a SOSL query.
+
+## TODO
+
+There's a bunch of things still on the todo list (feel free to help - just create a PR!):
+
+* Aggregates
+* SOQL query lacks support for inferring all fields on related object when the related object can be of multiple types (currently just chooses the first object)
+* `TYPEOF` keyword in SOQL queries
+* `USING SCOPE` keyword in SOQL queries
+* `WITH` keyword in SOQL queries
+* `FOR` keyword in SOQL queries
+* `NULLS FIRST|LAST` in ordering
+* `convertCurrency()` in SOSL queries
+* `toLabel()` in SOSL queries
+* `UPDATE TRACKING|VIEWSTAT` in SOSL queries
+* `WITH` keyword in SOSL queries
 
 # References
 
