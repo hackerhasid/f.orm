@@ -36,14 +36,15 @@ global with sharing class SOSLQuery implements IQuery {
     Integer oldLimit = this.queryLimit;
     this.queryLimit = 1;
     String query = buildQuery();
-    SObject obj = Database.Query(query);
+    List<List<SObject>> res = Search.Query(query);
+    SObject obj = res[0][0];
     this.queryLimit = oldLimit;
     return obj;
   }
 
-  global SObject[] Execute() {
+  global List<List<SObject>> Execute() {
     String query = buildQuery();
-    return Database.Query(query);
+    return Search.Query(query);
   }
 
   public String BuildQuery() {
