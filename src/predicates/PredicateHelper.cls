@@ -26,6 +26,6 @@ public with sharing class PredicateHelper {
       escaped.add(PredicateHelper.ToSoqlQueryString(s));
     } 
    
-    return '(' + String.join(escaped, ',') + ')';
+    return String.join(escaped, ',');
   }
 }
