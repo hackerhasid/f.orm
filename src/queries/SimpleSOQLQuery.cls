@@ -11,6 +11,10 @@ global with sharing class SimpleSOQLQuery implements IQuery {
     return new SimpleSOQLQuery(typeToQuery);
   }
 
+  global static SimpleSOQLQuery NewInstance(String typeToQuery) {
+    return new SimpleSOQLQuery(Schema.getGlobalDescribe().get(typeToQuery));
+  }
+
   private SimpleSOQLQuery(SObjectType typeToQuery) {
     this.queryObject = typeToQuery;
   }
@@ -18,6 +22,11 @@ global with sharing class SimpleSOQLQuery implements IQuery {
 
   global SimpleSOQLQuery SelectField(String f) {
     queryFields.add(f);
+    return this;
+  }
+
+  global SimpleSOQLQuery SelectFields(String[] fs) {
+    queryFields.addAll(fs);
     return this;
   }
 
