@@ -15,14 +15,15 @@ You should really look at the tests since those will be kept up to date more tha
 ## SOQL Query
 
 ```apex
-Account act = SimpleSOQLQuery.newInstance(Opportunity.SObjectType)
+Opportunity opt = SimpleSOQLQuery.newInstance(Opportunity.SObjectType)
   .Include('Account')
   .First();
 ```
 
 ```apex
-Account[] acts = SimpleSOQLQuery.newInstance(Opportunity.SObjectType)
-  .Include('Account')
+Opportunity[] opts = SimpleSOQLQuery.newInstance(Opportunity.SObjectType)
+  .SelectFields(new String[] { 'Id', 'Name', 'CreatedDate' }) // limits query to these fields
+  .Include('Account') // include all Account__r fields from Opportunity
   .Limit(100)
   .Offset(100)
   .OrderBy(OrderBy.SingleOrdering('Name', OrderDirection.DESCENDING))
@@ -36,7 +37,7 @@ Account[] acts = SOSLQuery.newInstance('Microsoft')
   .AndReturning(
     ReturningClause.newInstance(Account.getSObjectType())
       .SelectField('Id')
-      .Predicate(EqualsPredicate.newInstance('Name', '123'))
+      .Predicate(EqualsPredicate.newInstance('LastActivityDate', Date.today()))
     )
   .Execute();
 ```
