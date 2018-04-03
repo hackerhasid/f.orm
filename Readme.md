@@ -2,13 +2,6 @@
 
 F.ORM is meant as a natural Apex API to output SOQL and SOSL. All consumer-intended classes are instantiated via a _static_ `newInstance` method. All consumer-intended methods return the same type to allow chaining.
 
-## Queries
-
-There are 2 query types:
-
-* `SimpleSOQLQuery` representing a "simple" (non-aggregate) SOQL query
-* `SOSLQuery` representing a SOSL query
-
 # Basic usage
 
 Take a look at the tests for more info but here's a quick rundown to get you started:
@@ -126,8 +119,15 @@ Account[] acts = (Account[])SOSLQuery.newInstance('Microsoft')
     )
   .Execute();
 ```
+## Misc
+#### Queries
 
-## Predicates
+There are 2 query types:
+
+* `SimpleSOQLQuery` representing a "simple" (non-aggregate) SOQL query
+* `SOSLQuery` representing a SOSL query
+
+#### Predicates
 
 Every predicate supported by SOQL/SOSL is implemented:
 
@@ -141,7 +141,7 @@ both "simple" predicates:
 * `InPredicate` representing the `IN` keyword
 * `LessThanPredicate` representing `<`
 * `LessThanOrEqualsPredicate` representing `<=`
-* `LikePredicxate` representing the `LIKE` keyword
+* `LikePredicate` representing the `LIKE` keyword
 * `NotEqualsPredicate` representing `<>`
 * `NotInPredicagte` representing the `NOT IN` keyword
 * `NotPredicate` representing the `NOT` keyword
@@ -151,7 +151,7 @@ and "complex" predicates:
 * `AndPredicate` representing the `AND` keyword
 * `OrPredicate` representing the `OR` keyword
 
-## TODO
+#### TODO
 
 There's a bunch of things still on the todo list (feel free to help - just create a PR!):
 
@@ -169,4 +169,5 @@ There's a bunch of things still on the todo list (feel free to help - just creat
 
 # References
 
-https://developer.salesforce.com/docs/atlas.en-us.soql_sosl.meta/soql_sosl/sforce_api_calls_sosl_syntax.htm
+- SOQL syntax: https://developer.salesforce.com/docs/atlas.en-us.soql_sosl.meta/soql_sosl/sforce_api_calls_soql_select.htm
+- SOSL syntax: https://developer.salesforce.com/docs/atlas.en-us.soql_sosl.meta/soql_sosl/sforce_api_calls_sosl_syntax.htm
