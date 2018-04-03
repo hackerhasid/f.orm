@@ -40,6 +40,11 @@ global with sharing class AndPredicate implements IPredicate {
   }
   
   override global String toString() {
-    return '(' + String.join(predicates, ' AND ') + ')';
+    // HACK: unfortunately just calling String.join(predicates) doesn't seem to call the toString method :-(
+    List<String> sPredicates = new List<String>();
+    for (IPredicate p : predicates) {
+      sPredicates.add(String.valueOf(p));
+    }
+    return '(' + String.join(sPredicates, ' AND ') + ')';
   }
 }
