@@ -8,7 +8,7 @@ public class PredicateTests {
     insert bill;
     insert steve;
   }
-  @isTest static void SimpleAndPredicate() {
+  @isTest static void AndPredicate_2() {
     Lead l1 = new Lead(LastName = 'TestLast', Company = 'Company 1');
     Lead l2 = new Lead(LastName = 'TestLast', Company = 'Company 2');
     insert l1;
@@ -75,7 +75,7 @@ public class PredicateTests {
     System.assertEquals('Steve Jobs', acts[0].Name);
   }
 
-  @isTest static void SimpleLikeString() {
+  @isTest static void Like_String() {
 
     Test.startTest();
     Account[] acts = (Account[])
@@ -87,6 +87,78 @@ public class PredicateTests {
 
     System.assertEquals(1, acts.size());
     System.assertEquals('Bill Gates', acts[0].Name);
+  }
+  @isTest static void Like_Integer_Throws() {
+    try {
+    SimpleSOQLQuery.newInstance(Account.SObjectType)
+      .Predicate(LikePredicate.newInstance('AnnualRevenue', 1));
+    } catch(InvalidParameterValueException ex) {
+      System.assert(true);
+      return;
+    }
+
+    System.assert(false, 'Did not throw');
+  }
+  @isTest static void Like_Long_Throws() {
+    try {
+    
+    SimpleSOQLQuery.newInstance(Account.SObjectType)
+      .Predicate(LikePredicate.newInstance('AnnualRevenue', (Long)1));
+    } catch(InvalidParameterValueException ex) {
+      System.assert(true);
+      return;
+    }
+
+    System.assert(false, 'Did not throw');
+  }
+  @isTest static void Like_Double_Throws() {
+    try {
+    
+    SimpleSOQLQuery.newInstance(Account.SObjectType)
+      .Predicate(LikePredicate.newInstance('AnnualRevenue', (Double)1));
+    } catch(InvalidParameterValueException ex) {
+      System.assert(true);
+      return;
+    }
+
+    System.assert(false, 'Did not throw');
+  }
+  @isTest static void Like_Decimal_Throws() {
+    try {
+    
+    SimpleSOQLQuery.newInstance(Account.SObjectType)
+      .Predicate(LikePredicate.newInstance('AnnualRevenue', (Decimal)1));
+    } catch(InvalidParameterValueException ex) {
+      System.assert(true);
+      return;
+    }
+
+    System.assert(false, 'Did not throw');
+  }
+  @isTest static void Like_Date_Throws() {
+    try {
+    
+    SimpleSOQLQuery.newInstance(Account.SObjectType)
+      .Predicate(LikePredicate.newInstance('AnnualRevenue', Date.today()));
+    } catch(InvalidParameterValueException ex) {
+      System.assert(true);
+      return;
+    }
+
+    System.assert(false, 'Did not throw');
+  }
+
+  @isTest static void Like_DateTime_Throws() {
+    try {
+    
+    SimpleSOQLQuery.newInstance(Account.SObjectType)
+      .Predicate(LikePredicate.newInstance('AnnualRevenue', DateTime.now()));
+    } catch(InvalidParameterValueException ex) {
+      System.assert(true);
+      return;
+    }
+
+    System.assert(false, 'Did not throw');
   }
   @isTest static void SimpleNotLikeString() {
 
