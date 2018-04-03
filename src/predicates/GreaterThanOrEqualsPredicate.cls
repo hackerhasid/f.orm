@@ -1,14 +1,4 @@
 global with sharing class GreaterThanOrEqualsPredicate extends BasicPredicate {
-  global static IPredicate NewInstance(String fieldName, String value) {
-    InvalidParameterValueException ex = new InvalidParameterValueException('NewInstance', String.valueOf(value));
-    ex.setMessage('GreaterThanOrEquals cannot be used with String');
-    throw ex;
-  }
-  global static IPredicate NewInstance(String fieldName, String[] value) {
-    InvalidParameterValueException ex = new InvalidParameterValueException('NewInstance', String.valueOf(value));
-    ex.setMessage('GreaterThanOrEquals cannot be used with String Array');
-    throw ex;
-  }
   global static IPredicate NewInstance(String fieldName, Integer value) {
     return new GreaterThanOrEqualsPredicate(fieldName, PredicateHelper.ToSoqlQueryString(value));
   }

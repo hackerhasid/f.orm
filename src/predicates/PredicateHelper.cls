@@ -3,7 +3,7 @@ public with sharing class PredicateHelper {
     return '\'' + String.escapeSingleQuotes(s) + '\'';
   }
   public static String ToSoqlQueryString(Date d) {
-    return '\'' + DateTime.newInstance(d.year(), d.month(), d.day()).format('YYYY-MM-DD') + '\'';
+    return DateTime.newInstance(d.year(), d.month(), d.day()).format('yyyy-MM-dd');
   }
   public static String ToSoqlQueryString(List<Date> ds) {
     List<String> s = new List<String>();
@@ -14,7 +14,7 @@ public with sharing class PredicateHelper {
     return String.join(s, ',');
   }
   public static String ToSoqlQueryString(DateTime d) {
-    return '\'' + d.formatGMT('YYYY-MM-DDThh:mm:ssZ') + '\'';
+    return d.formatGMT('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
   }
   public static String ToSoqlQueryString(List<DateTime> ds) {
     List<String> s = new List<String>();
