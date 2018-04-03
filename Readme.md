@@ -1,39 +1,123 @@
 # F.ORM
 
-The Salesforce ORM. Documentation still very much a work in progress. Not a ton of code yet though so should be pretty easy to follow.
+F.ORM is meant as a natural Apex API to output SOQL and SOSL. All consumer-intended classes are instantiated via a _static_ `newInstance` method. All consumer-intended methods return the same type to allow chaining.
 
-# Getting Started
+## Queries
 
-Still pretty early but take a look at `SimpleSOQLQuery` and `SimpleSOSLQuery` classes.
+There are 2 query types:
 
-Also take a look at `tests/SimpleSOQLQueryTests.cls` and `tests/SimpleSOSLQueryTests.cls` for some usage examples.
+* `SimpleSOQLQuery` representing a "simple" (non-aggregate) SOQL query
+* `SOSLQuery` representing a SOSL query
 
-# Usage Examples
+# Basic usage
 
-You should really look at the tests since those will be kept up to date more than this document. But for the lazy:
+Take a look at the tests for more info but here's a quick rundown to get you started:
 
 ## SOQL Query
 
-```apex
-Opportunity opt = SimpleSOQLQuery.newInstance(Opportunity.SObjectType)
-  .Include('Account')
-  .First();
-```
+#### Initialization
+
+Start by initializing a new instance of SimpleSOQLQuery passing the type you want to query:
 
 ```apex
-Opportunity[] opts = SimpleSOQLQuery.newInstance(Opportunity.SObjectType)
-  .SelectFields(new String[] { 'Id', 'Name', 'CreatedDate' }) // limits query to these fields
+SimpleSOQLQuery.newInstance(Opportunity.SObjectType); // takes an SObjectType for when you know the type at compile time
+SimpleSOQLQuery.newInstance('Opportunity'); // also takes a string for when you don't
+```
+
+#### Executing queries
+
+`Execute()` executes the query. The simplest query you can build is just a select all:
+
+```apex
+// the `Execute()` method returns a List<SObject> so you'll probably want to cast that to the type you're working with
+Opportunity[] ops = (Opportunity[]) SimpleSOQLQuery.newInstance(Opportunity.SObjectType).Execute();
+```
+
+`First()` returns just the first element:
+
+```apex
+Opportunity opt = (Opportunity)SimpleSOQLQuery.newInstance(Opportunity.SObjectType).First();
+```
+
+#### Defining fields and relationships
+
+_By default the query will return all fields on the object but not fields on child objects._
+
+You can manually specify the fields you'd like returned by passing them to the `SelectFields` method.
+
+You can pass a list:
+
+```apex
+Opportunity[] opts = (Opportunity[]) SimpleSOQLQuery.newInstance(Opportunity.SObjectType)
+  .SelectFields(new String[] { 'Id', 'Name', 'CreatedDate' })
+  .Execute();
+```
+
+Or you can chain the SelectFields calls (this is especially useful for building dynamic queries):
+
+```apex
+Opportunity[] opts = (Opportunity[]) SimpleSOQLQuery.newInstance(Opportunity.SObjectType)
+  .SelectFields('Id')
+  .SelectFields('Name')
+  .SelectFields('CreatedDate')
+  .Execute();
+```
+
+You can also define which child relationships to hydrate:
+
+```apex
+Opportunity[] opts = (Opportunity[]) SimpleSOQLQuery.newInstance(Opportunity.SObjectType)
   .Include('Account') // include all Account__r fields from Opportunity
-  .Limit(100)
-  .Offset(100)
+  .Execute();
+```
+
+#### Limiting & Ordering
+
+You can limit and page the results returned using the `Limit` and `Offset` methods:
+
+```apex
+Opportunity[] opts = (Opportunity[]) SimpleSOQLQuery.newInstance(Opportunity.SObjectType)
+  .Limit(100) // limit query to 100 records
+  .Offset(100) // skip the first 100
+  .Execute();
+```
+
+You can order the results using the `OrderBy` method. It's easy to order by a single field:
+
+```apex
+Opportunity[] opts = (Opportunity[]) SimpleSOQLQuery.newInstance(Opportunity.SObjectType)
   .OrderBy(OrderBy.SingleOrdering('Name', OrderDirection.DESCENDING))
   .Execute();
 ```
 
-## SOSL Query
+or by multiple fields:
 
 ```apex
-Account[] acts = SOSLQuery.newInstance('Microsoft')
+Opportunity[] opts = (Opportunity[]) SimpleSOQLQuery.newInstance(Opportunity.SObjectType)
+  .OrderBy(
+    OrderBy.newInstance().ByField('Name', OrderDirection.DESCENDING).ByField('CreatedDate', OrderDirection.ASCENDING)
+  )
+  .Execute();
+```
+## SOSL Query
+
+#### Initialization
+
+Start by initializing a new instance of SOSLQuery passing the query term:
+
+```apex
+  SOSLQuery.newInstance('Microsoft');
+```
+#### Executing queries
+
+Like `SimpleSOQLQuery`, `SOSLQuery` provides `Execute()` and `First()` methods.
+
+#### Returning
+
+Build the returning clause using the `ReturningClause` class. Set the returning clause on the `SOSLQuery` class using the `AndReturning` method or `OnlyReturning` method (the former will allow you to build a returning clause for multiple types, the latter will only return a single type):
+
+```apex
+Account[] acts = (Account[])SOSLQuery.newInstance('Microsoft')
   .AndReturning(
     ReturningClause.newInstance(Account.getSObjectType())
       .SelectField('Id')
@@ -41,19 +125,6 @@ Account[] acts = SOSLQuery.newInstance('Microsoft')
     )
   .Execute();
 ```
-
-# Design
-
-F.ORM is meant as a natural Apex API to output SOQL and SOSL. All consumer-intended classes are instantiated via a _static_ `newInstance` method. All consumer-intended methods return the same type to allow chaining.
-
-## Queries
-
-There are 2 qury types:
-
-* `SimpleSOQLQuery` representing a "simple" (non-aggregate) SOQL query
-* `SOSLQuery` representing a SOSL query
-
-I anticipate writing another one - `AggregateSOQLQuery` - to handle aggregate queries but have not gotten there yet.
 
 ## Predicates
 
@@ -78,14 +149,6 @@ and "complex" predicates:
 
 * `AndPredicate` representing the `AND` keyword
 * `OrPredicate` representing the `OR` keyword
-
-## Ordering
-
-The `OrderBy` class is used for building ordering clauses.
-
-## Searching
-
-The  `ReturnClause` class is used to represent the `RETURNING...` phrase in a SOSL query.
 
 ## TODO
 
