@@ -101,7 +101,7 @@ public class PredicateTests {
     System.assertEquals(1, acts.size());
     System.assertEquals('Steve Jobs', acts[0].Name);
   }
-  @isTest static void SimpleGreaterThanOrEqualsPredicate() {
+  @isTest static void GreaterThanOrEqualsIntegerPredicate() {
     Test.startTest();
     Account[] acts = (Account[])
       SimpleSOQLQuery.newInstance(Account.SObjectType)
@@ -110,6 +110,32 @@ public class PredicateTests {
     Test.stopTest();
 
     System.assertEquals(2, acts.size());
+  }
+  @isTest static void GreaterThanOrEquals_String_Throws() {
+    try {
+      Account[] acts = (Account[])
+        SimpleSOQLQuery.newInstance(Account.SObjectType)
+        .Predicate(GreaterThanOrEqualsPredicate.newInstance('AnnualRevenue', 'Bad'))
+        .Execute();
+    } catch (InvalidParameterValueException ex) {
+      System.assert(true);
+      return;
+    }
+
+    System.assert(false, 'No exception thrown');
+  }
+  @isTest static void GreaterThanOrEquals_StringArray_Throws() {
+    try {
+      Account[] acts = (Account[])
+        SimpleSOQLQuery.newInstance(Account.SObjectType)
+        .Predicate(GreaterThanOrEqualsPredicate.newInstance('AnnualRevenue', new String[] { 'Bad', 'Bad' }))
+        .Execute();
+    } catch (InvalidParameterValueException ex) {
+      System.assert(true);
+      return;
+    }
+
+    System.assert(false, 'No exception thrown');
   }
   @isTest static void SimpleGreaterThanPredicate() {
     Test.startTest();
@@ -123,6 +149,33 @@ public class PredicateTests {
     System.assertEquals('Steve Jobs', acts.get(0).Name);
   }
 
+  @isTest static void GreaterThan_String_Throws() {
+    try {
+      Account[] acts = (Account[])
+        SimpleSOQLQuery.newInstance(Account.SObjectType)
+        .Predicate(GreaterThanPredicate.newInstance('AnnualRevenue', 'Bad'))
+        .Execute();
+    } catch (InvalidParameterValueException ex) {
+      System.assert(true);
+      return;
+    }
+
+    System.assert(false, 'No exception thrown');
+  }
+  @isTest static void GreaterThan_StringArray_Throws() {
+    try {
+      Account[] acts = (Account[])
+        SimpleSOQLQuery.newInstance(Account.SObjectType)
+        .Predicate(GreaterThanPredicate.newInstance('AnnualRevenue', new String[] { 'Bad', 'Bad' }))
+        .Execute();
+    } catch (InvalidParameterValueException ex) {
+      System.assert(true);
+      return;
+    }
+
+    System.assert(false, 'No exception thrown');
+  }
+
   @isTest static void SimpleLessThanOrEqualsPredicate() {
     Test.startTest();
     Account[] acts = (Account[])
@@ -133,7 +186,32 @@ public class PredicateTests {
 
     System.assertEquals(2, acts.size());
   }
+  @isTest static void LessThanOrEquals_String_Throws() {
+    try {
+      Account[] acts = (Account[])
+        SimpleSOQLQuery.newInstance(Account.SObjectType)
+        .Predicate(LessThanOrEqualsPredicate.newInstance('AnnualRevenue', 'Bad'))
+        .Execute();
+    } catch (InvalidParameterValueException ex) {
+      System.assert(true);
+      return;
+    }
 
+    System.assert(false, 'No exception thrown');
+  }
+    @isTest static void LessThanOrEquals_StringArray_Throws() {
+    try {
+      Account[] acts = (Account[])
+        SimpleSOQLQuery.newInstance(Account.SObjectType)
+        .Predicate(LessThanOrEqualsPredicate.newInstance('AnnualRevenue', new String[] { 'Bad', 'Bad' }))
+        .Execute();
+    } catch (InvalidParameterValueException ex) {
+      System.assert(true);
+      return;
+    }
+
+    System.assert(false, 'No exception thrown');
+  }
   @isTest static void SimpleLessThanPredicate() {
     Test.startTest();
     Account[] acts = (Account[])
@@ -145,7 +223,32 @@ public class PredicateTests {
     System.assertEquals(1, acts.size());
     System.assertEquals('Bill Gates', acts.get(0).Name);
   }
+  @isTest static void LessThan_String_Throws() {
+    try {
+      Account[] acts = (Account[])
+        SimpleSOQLQuery.newInstance(Account.SObjectType)
+        .Predicate(LessThanPredicate.newInstance('AnnualRevenue', 'Bad'))
+        .Execute();
+    } catch (InvalidParameterValueException ex) {
+      System.assert(true);
+      return;
+    }
 
+    System.assert(false, 'No exception thrown');
+  }
+  @isTest static void LessThan_StringArray_Throws() {
+    try {
+      Account[] acts = (Account[])
+        SimpleSOQLQuery.newInstance(Account.SObjectType)
+        .Predicate(LessThanPredicate.newInstance('AnnualRevenue', new String[] { 'Bad', 'Bad' }))
+        .Execute();
+    } catch (InvalidParameterValueException ex) {
+      System.assert(true);
+      return;
+    }
+
+    System.assert(false, 'No exception thrown');
+  }
   @isTest static void SimpleInPredicate() {
     Test.startTest();
     Account[] acts = (Account[])
