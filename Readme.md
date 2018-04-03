@@ -86,7 +86,7 @@ You can order the results using the `OrderBy` method. It's easy to order by a si
 
 ```apex
 Opportunity[] opts = (Opportunity[]) SimpleSOQLQuery.newInstance(Opportunity.SObjectType)
-  .OrderBy(OrderBy.SingleOrdering('Name', OrderDirection.DESCENDING))
+  .OrderBy(OrderBy.FirstBy('Name', OrderDirection.DESCENDING))
   .Execute();
 ```
 
@@ -95,7 +95,8 @@ or by multiple fields:
 ```apex
 Opportunity[] opts = (Opportunity[]) SimpleSOQLQuery.newInstance(Opportunity.SObjectType)
   .OrderBy(
-    OrderBy.newInstance().ByField('Name', OrderDirection.DESCENDING).ByField('CreatedDate', OrderDirection.ASCENDING)
+    OrderBy.FirstBy('Name', OrderDirection.DESCENDING)
+    .ThenBy('CreatedDate', OrderDirection.ASCENDING)
   )
   .Execute();
 ```

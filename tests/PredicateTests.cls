@@ -62,7 +62,7 @@ public class PredicateTests {
       .Predicate(OrPredicate.newInstance(
         EqualsPredicate.newInstance('TestText__c', '1'),
         EqualsPredicate.newInstance('TestText__c', '3')))
-      .OrderBy(OrderBy.NewInstance().ByField('TestText__c', OrderBy.OrderDirection.ASCENDING))
+      .OrderBy(OrderBy.FirstBy('TestText__c', OrderBy.OrderDirection.ASCENDING))
       .Execute();
 
     Test.stopTest();
@@ -90,7 +90,7 @@ public class PredicateTests {
         EqualsPredicate.newInstance('TestText__c', '2'),
         EqualsPredicate.newInstance('TestText__c', '4')
       }))
-      .OrderBy(OrderBy.NewInstance().ByField('TestText__c', OrderBy.OrderDirection.ASCENDING))
+      .OrderBy(OrderBy.FirstBy('TestText__c', OrderBy.OrderDirection.ASCENDING))
       .Execute();
 
     Test.stopTest();
@@ -723,7 +723,7 @@ public class PredicateTests {
     TestObject__c[] ts = (TestObject__c[])
       SimpleSOQLQuery.newInstance(TestObject__c.SObjectType)
       .Predicate(IncludesPredicate.newInstance('TestMultiSelect__c', new List<String>{'Two', 'Three', 'Ten'}))
-      .OrderBy(OrderBy.NewInstance().ByField('TestText__c', OrderBy.OrderDirection.ASCENDING))
+      .OrderBy(OrderBy.FirstBy('TestText__c', OrderBy.OrderDirection.ASCENDING))
       .Execute();
     Test.stopTest();
 

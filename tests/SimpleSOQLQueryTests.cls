@@ -28,7 +28,7 @@ public class SimpleSOQLQueryTests {
     Test.startTest();
     Account[] accts = (Account[])
       SimpleSOQLQuery.newInstance(Account.SObjectType)
-      .OrderBy(OrderBy.NewInstance().ByField('Name', OrderBy.OrderDirection.DESCENDING))
+      .OrderBy(OrderBy.FirstBy('Name', OrderBy.OrderDirection.DESCENDING))
       .SetOffset(1)
       .Execute();
     Test.stopTest();
