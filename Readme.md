@@ -1,6 +1,6 @@
 # F.ORM
 
-F.ORM is meant as a natural Apex API to output SOQL and SOSL. All consumer-intended classes are instantiated via a _static_ `newInstance` method. All consumer-intended methods return the same type to allow chaining.
+F.ORM is for building dynamic SOQL/SOSL. It's meant as a natural Apex API to output SOQL and SOSL; consumer-intended classes are instantiated via a _static_ `newInstance` method and consumer-intended methods return the same type to allow chaining.
 
 # Basic usage
 
