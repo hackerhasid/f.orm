@@ -24,7 +24,11 @@ global with sharing class ReturningClause {
   }
 
   global ReturningClause SelectFields(String[] f) {
-    this.clauseFields.addAll(f);
+    for (String field : f){
+      if (!clauseFields.contains(field.toUpperCase())){
+        clauseFields.add(field.toUpperCase());
+      }
+    }
     return this;
   }
 
