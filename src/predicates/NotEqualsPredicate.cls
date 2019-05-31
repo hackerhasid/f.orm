@@ -2,9 +2,6 @@ global with sharing class NotEqualsPredicate extends BasicPredicate {
   global static IPredicate NewInstance(String fieldName, String value) {
     return new NotEqualsPredicate(fieldName, PredicateHelper.ToSoqlQueryString(value));
   }
-  global static IPredicate NewInstance(String fieldName, String[] value) {
-    return new NotEqualsPredicate(fieldName, PredicateHelper.ToSoqlQueryString(value));
-  }
   global static IPredicate NewInstance(String fieldName, Integer value) {
     return new NotEqualsPredicate(fieldName, PredicateHelper.ToSoqlQueryString(value));
   }

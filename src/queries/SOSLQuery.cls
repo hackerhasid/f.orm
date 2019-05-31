@@ -32,6 +32,11 @@ global with sharing class SOSLQuery implements IQuery {
     return this;
   }
 
+  global SOSLQuery SetSearchGroup(SOSLQuery.SearchGroup grp) {
+    this.querySearchGroup = grp;
+    return this;
+  }
+
   global SObject First() {
     Integer oldLimit = this.queryLimit;
     this.queryLimit = 1;
