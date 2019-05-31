@@ -6,11 +6,18 @@ public with sharing class SchemaHelper {
 
   public static Set<String> getAllFieldNamesForObject(SObjectType t) {
     Map<String, Schema.SObjectField> fieldMap = getAllFieldsForObject(t);
-    Set<String> fieldNames = new Set<String>();
+    Map<String, String> fieldNames = new Map<String, String>();
 
+    //Due to an issue where SOQL complains that litify_pm__Some_Field__c and Some_Field__c are the same,
+    //we have to week out fields that have duplicate api names minus the namespace prefix
+    //We prioritize the client's custom fields over litify fields. 
     for (Schema.SObjectField field : fieldMap.values()) {
-      fieldNames.add(field.getDescribe().getName());
+      String fieldName = field.getDescribe().getName();
+      String fieldNameNoPrefix = fieldName.toLowerCase().replace('litify_pm__', '');
+      if (!fieldName.toLowerCase().contains('litify_pm__') || !fieldNames.containsKey(fieldNameNoPrefix)){
+        fieldNames.put(fieldNameNoPrefix, fieldName);
+      }
     }
-    return fieldNames;
+    return new Set<String>(fieldNames.values());
   }
 }
