@@ -1,24 +1,27 @@
 global with sharing class NotInPredicate extends BasicPredicate {
   private IQuery innerQuery = null;
+  global static IPredicate NewInstance(String fieldName, String value) {
+    return new NotInPredicate(fieldName, PredicateHelper.ToSoqlQueryString(value));
+  }
   global static IPredicate NewInstance(String fieldName, String[] value) {
     return new NotInPredicate(fieldName, PredicateHelper.ToSoqlQueryString(value));
   }
-  global static IPredicate NewInstance(String fieldName, List<Integer> value) {
+  global static IPredicate NewInstance(String fieldName, Integer value) {
     return new NotInPredicate(fieldName, PredicateHelper.ToSoqlQueryString(value));
   }
-  global static IPredicate NewInstance(String fieldName, List<Long> value) {
+  global static IPredicate NewInstance(String fieldName, Long value) {
     return new NotInPredicate(fieldName, PredicateHelper.ToSoqlQueryString(value));
   }
-  global static IPredicate NewInstance(String fieldName, List<Decimal> value) {
+  global static IPredicate NewInstance(String fieldName, Decimal value) {
     return new NotInPredicate(fieldName, PredicateHelper.ToSoqlQueryString(value));
   }
-  global static IPredicate NewInstance(String fieldName, List<Double> value) {
+  global static IPredicate NewInstance(String fieldName, Double value) {
     return new NotInPredicate(fieldName, PredicateHelper.ToSoqlQueryString(value));
   }
-  global static IPredicate NewInstance(String fieldName, List<Date> value) {
+  global static IPredicate NewInstance(String fieldName, Date value) {
     return new NotInPredicate(fieldName, PredicateHelper.ToSoqlQueryString(value));
   }
-  global static IPredicate NewInstance(String fieldName, List<DateTime> value) {
+  global static IPredicate NewInstance(String fieldName, DateTime value) {
     return new NotInPredicate(fieldName, PredicateHelper.ToSoqlQueryString(value));
   }
   global static IPredicate NewInstance(String fieldName, IQuery value) {

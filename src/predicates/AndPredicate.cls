@@ -11,6 +11,21 @@ global with sharing class AndPredicate implements IPredicate {
     p.Append(p2);
     return p;
   }
+  global static AndPredicate NewInstance(IPredicate p1, IPredicate p2, IPredicate p3) {
+    AndPredicate p = AndPredicate.NewInstance(p1, p2);
+    p.Append(p3);
+    return p;
+  }
+  global static AndPredicate NewInstance(IPredicate p1, IPredicate p2, IPredicate p3, IPredicate p4) {
+    AndPredicate p = AndPredicate.NewInstance(p1, p2, p3);
+    p.Append(p4);
+    return p;
+  }
+  global static AndPredicate NewInstance(IPredicate p1, IPredicate p2, IPredicate p3, IPredicate p4, IPredicate p5) {
+    AndPredicate p = AndPredicate.NewInstance(p1, p2, p3, p4);
+    p.Append(p5);
+    return p;
+  }
   global static AndPredicate NewInstance(IPredicate[] ps) {
     AndPredicate pred = AndPredicate.NewInstance();
     for (IPredicate p : ps) {
@@ -25,11 +40,6 @@ global with sharing class AndPredicate implements IPredicate {
   }
   
   override global String toString() {
-    // HACK: unfortunately just calling String.join(predicates) doesn't seem to call the toString method :-(
-    List<String> sPredicates = new List<String>();
-    for (IPredicate p : predicates) {
-      sPredicates.add(String.valueOf(p));
-    }
-    return '(' + String.join(sPredicates, ' AND ') + ')';
+    return '(' + String.join(predicates, ' AND ') + ')';
   }
 }

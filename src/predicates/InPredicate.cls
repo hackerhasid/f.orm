@@ -1,25 +1,27 @@
 global with sharing class InPredicate extends BasicPredicate {
   private IQuery innerQuery = null;
-  
+  global static IPredicate NewInstance(String fieldName, String value) {
+    return new InPredicate(fieldName, PredicateHelper.ToSoqlQueryString(value));
+  }
   global static IPredicate NewInstance(String fieldName, String[] value) {
     return new InPredicate(fieldName, PredicateHelper.ToSoqlQueryString(value));
   }
-  global static IPredicate NewInstance(String fieldName, List<Integer> value) {
+  global static IPredicate NewInstance(String fieldName, Integer value) {
     return new InPredicate(fieldName, PredicateHelper.ToSoqlQueryString(value));
   }
-  global static IPredicate NewInstance(String fieldName, List<Long> value) {
+  global static IPredicate NewInstance(String fieldName, Long value) {
     return new InPredicate(fieldName, PredicateHelper.ToSoqlQueryString(value));
   }
-  global static IPredicate NewInstance(String fieldName, List<Decimal> value) {
+  global static IPredicate NewInstance(String fieldName, Decimal value) {
     return new InPredicate(fieldName, PredicateHelper.ToSoqlQueryString(value));
   }
-  global static IPredicate NewInstance(String fieldName, List<Double> value) {
+  global static IPredicate NewInstance(String fieldName, Double value) {
     return new InPredicate(fieldName, PredicateHelper.ToSoqlQueryString(value));
   }
-  global static IPredicate NewInstance(String fieldName, List<Date> value) {
+  global static IPredicate NewInstance(String fieldName, Date value) {
     return new InPredicate(fieldName, PredicateHelper.ToSoqlQueryString(value));
   }
-  global static IPredicate NewInstance(String fieldName, List<DateTime> value) {
+  global static IPredicate NewInstance(String fieldName, DateTime value) {
     return new InPredicate(fieldName, PredicateHelper.ToSoqlQueryString(value));
   }
   global static IPredicate NewInstance(String fieldName, IQuery value) {
@@ -27,10 +29,9 @@ global with sharing class InPredicate extends BasicPredicate {
   }
 
   private InPredicate() {}
-  private InPredicate (String fieldName, String value) {
+  private InPredicate(String fieldName, String value) {
     super(fieldName, value);
   }
-  
   private InPredicate(String fieldName, IQuery value) {
     super(fieldName, null);
     innerQuery = value;
@@ -38,7 +39,7 @@ global with sharing class InPredicate extends BasicPredicate {
 
   override global String toString() {
     String innerValue = this.value;
-    if (innerQuery != null) { // this.value and innerQuery should not *both* have a value
+    if (innerQuery != null) {
       innerValue = innerQuery.BuildQuery();
     }
 

@@ -1,4 +1,10 @@
 global with sharing class LessThanOrEqualsPredicate extends BasicPredicate {
+  global static IPredicate NewInstance(String fieldName, String value) {
+    return new LessThanOrEqualsPredicate(fieldName, PredicateHelper.ToSoqlQueryString(value));
+  }
+  global static IPredicate NewInstance(String fieldName, String[] value) {
+    return new LessThanOrEqualsPredicate(fieldName, PredicateHelper.ToSoqlQueryString(value));
+  }
   global static IPredicate NewInstance(String fieldName, Integer value) {
     return new LessThanOrEqualsPredicate(fieldName, PredicateHelper.ToSoqlQueryString(value));
   }

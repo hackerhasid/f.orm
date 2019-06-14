@@ -26,38 +26,15 @@ global with sharing class OrderBy {
 
   private List<SingleOrdering> allOrderings = new List<SingleOrdering>();
 
-  @deprecated
-  // Use .FirstBy() instead
   global static OrderBy NewInstance() {
-    return new OrderBy();
+      return new OrderBy();
   }
 
-  global static OrderBy FirstBy(String fieldName) {
-    OrderBy o = new OrderBy();
-    return o.ThenBy(fieldName);
-  }
-  global static OrderBy FirstBy(String fieldName, OrderBy.OrderDirection direction) {
-    OrderBy o = new OrderBy();
-    return o.ThenBy(fieldName, direction);
-  }
-
-  @deprecated
-  // Use ThenBy() instead
   global OrderBy ByField(String fieldName) {
     allOrderings.add(new SingleOrdering(fieldName));
     return this;
   }
-  @deprecated
-  // Use ThenBy() instead
   global OrderBy ByField(String fieldName, OrderDirection direction) {
-    allOrderings.add(new SingleOrdering(fieldName, direction));
-    return this;
-  }
-  global OrderBy ThenBy(String fieldName) {
-    allOrderings.add(new SingleOrdering(fieldName));
-    return this;
-  }
-  global OrderBy ThenBy(String fieldName, OrderDirection direction) {
     allOrderings.add(new SingleOrdering(fieldName, direction));
     return this;
   }
