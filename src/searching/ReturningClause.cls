@@ -1,9 +1,9 @@
 global with sharing class ReturningClause {
   // See https://developer.salesforce.com/docs/atlas.en-us.soql_sosl.meta/soql_sosl/sforce_api_calls_sosl_returning.htm#topic-title
 
-  private String clauseType = null;
-  private List<String> clauseFields = new List<String>();
-  private IPredicate clausePredicate = null;
+  public String clauseType { get; private set; }
+  public List<String> clauseFields { get; private set; }
+  public IPredicate clausePredicate { get; private set; }
   private OrderBy clauseOrdering = null;
   private Integer clauseLimit = null;
   private Integer clauseOffset = null;
@@ -16,6 +16,8 @@ global with sharing class ReturningClause {
   }
   private ReturningClause(String returningType) {
     this.clauseType = returningType;
+    clauseFields = new List<String>();
+    clausePredicate = null;
   }
 
   global ReturningClause SelectField(String f) {

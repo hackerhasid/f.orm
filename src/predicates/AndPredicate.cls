@@ -40,6 +40,18 @@ global with sharing class AndPredicate implements IPredicate {
   }
   
   override global String toString() {
-    return '(' + String.join(predicates, ' AND ') + ')';
+    String toReturn = '(';
+    
+    Boolean firstPredicate = true;
+    for (IPredicate predicate: predicates) {
+      if (!firstPredicate) {
+        toReturn += ' AND ';
+      }
+      firstPredicate = false;
+      toReturn += String.valueOf(predicate); // Classes that extend BasicPredicate override toString()
+    }
+    toReturn += ')';
+
+    return toReturn;
   }
 }

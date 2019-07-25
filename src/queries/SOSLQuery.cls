@@ -5,7 +5,7 @@ global with sharing class SOSLQuery implements IQuery {
 
   private String queryString = null;
   private SOSLQuery.SearchGroup querySearchGroup = null;
-  private List<ReturningClause> queryReturningClause = new List<ReturningClause>();
+  public List<ReturningClause> queryReturningClause { get; private set; }
   private Integer queryLimit = null;
 
   global static SOSLQuery NewInstance(String query) {
@@ -14,6 +14,7 @@ global with sharing class SOSLQuery implements IQuery {
 
   private SOSLQuery(String query) {
     this.queryString = query;
+    queryReturningClause = new List<ReturningClause>();
   }
 
   global SOSLQuery SetLimit(Integer l) {

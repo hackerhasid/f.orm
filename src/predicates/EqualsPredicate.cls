@@ -1,26 +1,38 @@
 global with sharing class EqualsPredicate extends BasicPredicate {
+
   global static IPredicate NewInstance(String fieldName, String value) {
     return new EqualsPredicate(fieldName, PredicateHelper.ToSoqlQueryString(value));
   }
+
   global static IPredicate NewInstance(String fieldName, String[] value) {
     return new EqualsPredicate(fieldName, PredicateHelper.ToSoqlQueryString(value));
   }
+
   global static IPredicate NewInstance(String fieldName, Integer value) {
     return new EqualsPredicate(fieldName, PredicateHelper.ToSoqlQueryString(value));
   }
+
   global static IPredicate NewInstance(String fieldName, Long value) {
     return new EqualsPredicate(fieldName, PredicateHelper.ToSoqlQueryString(value));
   }
+
   global static IPredicate NewInstance(String fieldName, Decimal value) {
     return new EqualsPredicate(fieldName, PredicateHelper.ToSoqlQueryString(value));
   }
+
   global static IPredicate NewInstance(String fieldName, Double value) {
     return new EqualsPredicate(fieldName, PredicateHelper.ToSoqlQueryString(value));
   }
+
   global static IPredicate NewInstance(String fieldName, Date value) {
     return new EqualsPredicate(fieldName, PredicateHelper.ToSoqlQueryString(value));
   }
+
   global static IPredicate NewInstance(String fieldName, DateTime value) {
+    return new EqualsPredicate(fieldName, PredicateHelper.ToSoqlQueryString(value));
+  }
+  
+  global static IPredicate NewInstance(String fieldName, Boolean value) {
     return new EqualsPredicate(fieldName, PredicateHelper.ToSoqlQueryString(value));
   }
 
