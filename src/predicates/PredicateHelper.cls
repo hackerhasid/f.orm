@@ -5,6 +5,9 @@ public with sharing class PredicateHelper {
   }
 
   public static String ToSoqlQueryString(Date d) {
+    if (d == null) {
+      return null;
+    }
     return DateTime.newInstance(d.year(), d.month(), d.day()).format('YYYY-MM-dd');
   }
 
